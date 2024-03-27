@@ -18,12 +18,10 @@ final class DtrDutyRosterDirector extends AbstractDirector
 
     /**
      * @param DutyRosterReaderInterface[] $readers
-     * @param DutyRosterTransformerInterface[] $transformers
      * @param DutyRosterWriterInterface[] $writers
      */
     public function __construct(
         private readonly iterable $readers,
-        private readonly iterable $transformers,
         private readonly iterable $writers,
     )
     {
@@ -58,10 +56,6 @@ final class DtrDutyRosterDirector extends AbstractDirector
             }
 
             throw new Exception('Cannot find proper reader for given roster');
-        }
-
-        foreach ($this->transformers as $transformer) {
-            $transformer->transform($activitiesDtoCollection);
         }
 
         foreach ($this->writers as $writer) {

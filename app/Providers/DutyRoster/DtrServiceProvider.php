@@ -12,6 +12,7 @@ use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoArrivalTimeReaderPlugin;
 use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoCheckInLocationReaderPlugin;
 use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoCheckOutLocationReaderPlugin;
 use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoDepartureTimeReaderPlugin;
+use App\DutyRoster\Dtr\Writer\DtrDutyRosterWriter;
 use App\Jobs\DutyRoster\StoreDutyRoster;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -29,9 +30,8 @@ class DtrServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->registerDirectors();;
+        $this->registerDirectors();
         $this->registerReaders();
-        $this->registerTransformers();
         $this->registerWriters();
     }
 
@@ -48,7 +48,6 @@ class DtrServiceProvider extends ServiceProvider
         $this->app->bind(DtrDutyRosterDirector::class, function (Application $app) {
             return new DtrDutyRosterDirector(
                 $app->tagged(self::TAG_DTR_READER),
-                $app->tagged(self::TAG_DTR_TRANSFORMER),
                 $app->tagged(self::TAG_DTR_WRITER),
             );
         });
@@ -84,13 +83,8 @@ class DtrServiceProvider extends ServiceProvider
             ->giveTagged(self::TAG_DTR_HTML_READER_PLUGIN);
     }
 
-    private function registerTransformers(): void
-    {
-
-    }
-
     private function registerWriters(): void
     {
-
+        $this->app->tag(DtrDutyRosterWriter::class, self::TAG_DTR_WRITER);
     }
 }

@@ -9,22 +9,17 @@ class RosterDto
 {
     private ?int $id;
 
+    private DateTime $day;
     private ActivityEnum $activity;
-
     private ?int $flightNumber;
 
-    private DateTime $day;
-
     private ?DateTime $activityStart;
-
     private ?DateTime $activityEnd;
 
     private DateTime $departure;
-
     private DateTime $arrival;
 
     private LocationDto $checkInLocation;
-
     private LocationDto $checkOutLocation;
 
     public function setId(?int $id): self
