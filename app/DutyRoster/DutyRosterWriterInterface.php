@@ -2,9 +2,9 @@
 
 namespace App\DutyRoster;
 
-use App\DutyRoster\Shared\Dto\ActivitiesDtoCollection;
+use App\DutyRoster\Shared\Dto\RosterDtoCollection;
 
 interface DutyRosterWriterInterface
 {
-    public function write(ActivitiesDtoCollection $dtoCollection): void;
+    public function write(RosterDtoCollection $dtoCollection): void;
 }

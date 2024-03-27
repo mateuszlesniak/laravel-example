@@ -2,9 +2,9 @@
 
 namespace App\DutyRoster;
 
-use App\DutyRoster\Shared\Dto\ActivitiesDtoCollection;
+use App\DutyRoster\Shared\Dto\RosterDtoCollection;
 
 interface DutyRosterTransformerInterface
 {
-    public function transform(ActivitiesDtoCollection $collection): void;
+    public function transform(RosterDtoCollection $collection): void;
 }

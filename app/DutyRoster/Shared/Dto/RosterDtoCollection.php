@@ -4,10 +4,10 @@ namespace App\DutyRoster\Shared\Dto;
 
 use Ramsey\Collection\AbstractCollection;
 
-class ActivitiesDtoCollection extends AbstractCollection
+class RosterDtoCollection extends AbstractCollection
 {
     public function getType(): string
     {
-        return ActivityDto::class;
+        return RosterDto::class;
     }
 }

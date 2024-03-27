@@ -2,7 +2,7 @@
 
 namespace App\DutyRoster;
 
-use App\DutyRoster\Shared\Dto\ActivitiesDtoCollection;
+use App\DutyRoster\Shared\Dto\RosterDtoCollection;
 
 interface DutyRosterReaderInterface
 {
@@ -10,5 +10,5 @@ interface DutyRosterReaderInterface
 
     public function isApplicable(string $mimeType): bool;
 
-    public function read(string $fileContent): ActivitiesDtoCollection;
+    public function read(string $fileContent): RosterDtoCollection;
 }

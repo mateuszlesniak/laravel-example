@@ -15,24 +15,8 @@ final class StoreController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
         $file = $request->file(self::FIELD_FILE);
-
         StoreDutyRoster::dispatchSync($file->getMimeType(), $file->getContent());
 
-//        $domDocument = new Crawler($file);
-//
-//        $dateRange = $domDocument->filter('select#ctl00_Main_periodSelect')->first();
-//        $dateRange = $dateRange->filter('option[selected]')->first()->attr('value');
-//
-//        $table = $domDocument->filter('table#ctl00_Main_activityGrid')->first();
-//
-//        $table->filter('tr')->each(function (Crawler $row, int $index) {
-//            if ($index === 0) {
-//                return;
-//            }
-//
-//            $values = $row->filter('td');
-//
-//        });
-        return response()->json('Hello!', Response::HTTP_CREATED);
+        return response()->json(null, Response::HTTP_CREATED);
     }
 }

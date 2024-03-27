@@ -4,6 +4,14 @@ namespace App\Providers\DutyRoster;
 
 use App\DutyRoster\Dtr\DtrDutyRosterDirector;
 use App\DutyRoster\Dtr\Reader\CcnxHtmlReader;
+use App\DutyRoster\Dtr\Reader\Plugin\Html\ReaderPluginInterface;
+use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoActivityEndTimeReaderPlugin;
+use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoActivityReaderPlugin;
+use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoActivityStartTimeReaderPlugin;
+use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoArrivalTimeReaderPlugin;
+use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoCheckInLocationReaderPlugin;
+use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoCheckOutLocationReaderPlugin;
+use App\DutyRoster\Dtr\Reader\Plugin\Html\RosterDtoDepartureTimeReaderPlugin;
 use App\Jobs\DutyRoster\StoreDutyRoster;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -13,6 +21,8 @@ class DtrServiceProvider extends ServiceProvider
     private const TAG_DTR_READER = 'TAG_DTR_READER';
     private const TAG_DTR_TRANSFORMER = 'TAG_DTR_TRANSFORMER';
     private const TAG_DTR_WRITER = 'TAG_DTR_WRITER';
+
+    private const TAG_DTR_HTML_READER_PLUGIN = 'TAG_DTR_HTML_READER_PLUGIN';
 
     /**
      * Register services.
@@ -53,6 +63,25 @@ class DtrServiceProvider extends ServiceProvider
     private function registerReaders(): void
     {
         $this->app->tag(CcnxHtmlReader::class, self::TAG_DTR_READER);
+
+        $this->registerHtmlReaderPlugins();
+    }
+
+    private function registerHtmlReaderPlugins(): void
+    {
+        $this->app->tag([
+            RosterDtoActivityReaderPlugin::class,
+            RosterDtoActivityStartTimeReaderPlugin::class,
+            RosterDtoActivityEndTimeReaderPlugin::class,
+            RosterDtoDepartureTimeReaderPlugin::class,
+            RosterDtoArrivalTimeReaderPlugin::class,
+            RosterDtoCheckInLocationReaderPlugin::class,
+            RosterDtoCheckOutLocationReaderPlugin::class,
+        ], self::TAG_DTR_HTML_READER_PLUGIN);
+
+        $this->app->when(CcnxHtmlReader::class)
+            ->needs(ReaderPluginInterface::class)
+            ->giveTagged(self::TAG_DTR_HTML_READER_PLUGIN);
     }
 
     private function registerTransformers(): void
