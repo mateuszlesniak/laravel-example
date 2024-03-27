@@ -2,6 +2,7 @@
 
 namespace App\Jobs\DutyRoster;
 
+use App\DutyRoster\Dtr\DtrDutyRosterDirector;
 use App\DutyRoster\DutyRosterDirectorInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,24 +15,30 @@ class StoreDutyRoster implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(
-        private readonly string $contentType,
+        private readonly string $mimeType,
         private readonly string $content,
     )
     {
     }
 
-    public function handle(): void
+    /**
+     * @param array|DutyRosterDirectorInterface[] $directors
+     * @return void
+     */
+    public function handle(array $directors): void
     {
-        $director = $this->determineDirector();
+        $director = $this->determineDirector($directors);
 
-        $data = $director->read($this->content);
-        $data =$director->transform($data);
-
-        $director->write($data);
+        $director->loadData($this->content, $this->mimeType);
+        $director->process();
     }
 
-    private function determineDirector(): DutyRosterDirectorInterface
+    /**
+     * @param array|DutyRosterDirectorInterface[] $directors
+     * @return DutyRosterDirectorInterface
+     */
+    private function determineDirector(array $directors): DutyRosterDirectorInterface
     {
-
+        return $directors[DtrDutyRosterDirector::class];
     }
 }

@@ -2,30 +2,72 @@
 
 namespace App\DutyRoster\Dtr;
 
-use App\DutyRoster\DutyRosterDirectorInterface;
+use App\DutyRoster\DutyRosterReaderInterface;
+use App\DutyRoster\DutyRosterTransformerInterface;
+use App\DutyRoster\DutyRosterWriterInterface;
+use App\DutyRoster\Shared\AbstractDirector;
+use App\DutyRoster\Shared\DutyRosterMimeTypeEnum;
+use App\DutyRoster\Shared\Exception\EmptyDataException;
+use App\DutyRoster\Shared\Exception\MimeTypeNotSupported;
+use Exception;
 
-class DtrDutyRosterDirector implements DutyRosterDirectorInterface
+final class DtrDutyRosterDirector extends AbstractDirector
 {
+    private string $originalData;
+    private string $mimeType;
 
+    /**
+     * @param DutyRosterReaderInterface[] $readers
+     * @param DutyRosterTransformerInterface[] $transformers
+     * @param DutyRosterWriterInterface[] $writers
+     */
     public function __construct(
-        private readonly array
+        private readonly iterable $readers,
+        private readonly iterable $transformers,
+        private readonly iterable $writers,
     )
     {
     }
 
-    public function read(string $content)
+    public function loadData(string $data, string $mimeType): void
     {
-        // TODO: Implement read() method.
+        if (!$this->checkIfMimeTypeIsSupported($mimeType)) {
+            throw new MimeTypeNotSupported();
+        }
+
+        if (empty($data)) {
+            throw new EmptyDataException();
+        }
+
+        $this->mimeType = $mimeType;
+        $this->originalData = $data;
     }
 
-    public function transform(array $data)
+    private function checkIfMimeTypeIsSupported(string $mimeType): bool
     {
-        // TODO: Implement transform() method.
+        return $mimeType === DutyRosterMimeTypeEnum::TEXT_HTML->value;
     }
 
-    public function write(array $data)
+    public function process(): void
     {
-        // TODO: Implement write() method.
+        foreach ($this->readers as $reader) {
+            if ($reader->isApplicable($this->mimeType)) {
+                $activitiesDtoCollection = $reader->read($this->originalData);
+
+                break;
+            }
+
+            throw new Exception('Cannot find proper reader for given roster');
+        }
+
+        foreach ($this->transformers as $transformer) {
+            $transformer->transform($activitiesDtoCollection);
+        }
+
+        foreach ($this->writers as $writer) {
+            $writer->write($activitiesDtoCollection);
+        }
     }
+
 
 }

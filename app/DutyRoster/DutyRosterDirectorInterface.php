@@ -4,9 +4,7 @@ namespace App\DutyRoster;
 
 interface DutyRosterDirectorInterface
 {
-    public function read(string $content);
+    public function loadData(string $data, string $mimeType): void;
 
-    public function transform(array $data);
-
-    public function write(array $data);
+    public function process(): void;
 }
