@@ -18,9 +18,9 @@ return new class extends Migration {
             $table->enum('activity_code', array_map(function (ActivityEnum $enum) {
                 return $enum->value;
             }, ActivityEnum::cases()))->nullable(false);
-            $table->unsignedInteger('flight_number');
-            $table->time('activity_start');
-            $table->time('activity_end');
+            $table->unsignedInteger('flight_number')->nullable();
+            $table->time('activity_start')->nullable();
+            $table->time('activity_end')->nullable();
             $table->time('departure')->nullable(false);
             $table->time('arrival')->nullable(false);
             $table->foreignIdFor(Location::class, 'check_in_location_id')->nullable(false);

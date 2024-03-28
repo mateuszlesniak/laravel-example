@@ -4,7 +4,7 @@ namespace App\DutyRoster\Shared\Dto;
 
 class LocationDto
 {
-    private ?int $id;
+    private ?int $id = null;
 
     private string $code;
 
@@ -20,5 +20,15 @@ class LocationDto
         $this->code = $code;
 
         return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCode(): string
+    {
+        return $this->code;
     }
 }

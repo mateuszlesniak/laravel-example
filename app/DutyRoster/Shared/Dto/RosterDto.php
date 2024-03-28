@@ -7,14 +7,14 @@ use DateTime;
 
 class RosterDto
 {
-    private ?int $id;
+    private ?int $id = null;
 
     private DateTime $day;
     private ActivityEnum $activity;
-    private ?int $flightNumber;
+    private ?int $flightNumber = null;
 
-    private ?DateTime $activityStart;
-    private ?DateTime $activityEnd;
+    private ?DateTime $activityStart = null;
+    private ?DateTime $activityEnd = null;
 
     private DateTime $departure;
     private DateTime $arrival;

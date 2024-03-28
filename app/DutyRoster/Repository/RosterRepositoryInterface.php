@@ -1,10 +1,10 @@
 <?php
 
-namespace App\DutyRoster\EntityManager;
+namespace App\DutyRoster\Repository;
 
 use App\DutyRoster\Shared\Dto\RosterDto;
 
-interface RosterEntityManagerInterface
+interface RosterRepositoryInterface
 {
     public function persistRosterDto(RosterDto $rosterDto): void;
 }

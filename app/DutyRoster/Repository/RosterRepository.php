@@ -1,16 +1,15 @@
 <?php
 
-namespace App\DutyRoster\EntityManager;
+namespace App\DutyRoster\Repository;
 
 use App\DutyRoster\Shared\Dto\RosterDto;
-use App\Location\EntityManager\LocationEntityManagerInterface;
+use App\Location\LocationRepositoryInterface;
 use App\Models\Roster;
 
-class RosterEntityManager implements RosterEntityManagerInterface
+class RosterRepository implements RosterRepositoryInterface
 {
-
     public function __construct(
-        LocationEntityManagerInterface $locationEntityManager
+        private readonly LocationRepositoryInterface $locationRepository
     )
     {
     }
@@ -24,8 +23,8 @@ class RosterEntityManager implements RosterEntityManagerInterface
 
     private function transformDtoToModel(RosterDto $rosterDto): Roster
     {
-        $checkInLocation = null;
-        $checkPOutLocation = null;
+        $checkInLocation = $this->locationRepository->findOrCreateByCode($rosterDto->getCheckInLocation()->getCode());
+        $checkPOutLocation = $this->locationRepository->findOrCreateByCode($rosterDto->getCheckOutLocation()->getCode());
 
         return new Roster([
             'day' => $rosterDto->getDay()->format('Y-m-d'),
@@ -35,8 +34,8 @@ class RosterEntityManager implements RosterEntityManagerInterface
             'activity_end' => $rosterDto->getActivityEnd()?->format('H:i'),
             'departure' => $rosterDto->getDeparture()->format('H:i'),
             'arrival' => $rosterDto->getArrival()->format('H:i'),
-            'check_in_location_id' => null,
-            'check_out_location_id' => null,
+            'check_in_location_id' => $checkInLocation->id,
+            'check_out_location_id' => $checkPOutLocation->id,
         ]);
     }
 }
