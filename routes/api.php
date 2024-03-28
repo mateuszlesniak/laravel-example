@@ -8,15 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('duty-rosters')->group(function () {
     Route::post('/store', PostStoreController::class);
 
-    Route::prefix('event')->group(function () {
-        Route::get('/', GetEventController::class);
-        Route::get('/location/{locationCode}', GetEventController::class);
-    });
-
-    Route::prefix('schedule')->group(function () {
-        Route::get('/', GetScheduleController::class);
-        Route::get('/{activityCode?}', GetScheduleController::class);
-    });
+    Route::get('/event/{locationCode?}', GetEventController::class);
+    Route::get('/schedule/{activityCode?}', GetScheduleController::class);
 });
 
 
