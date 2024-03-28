@@ -35,7 +35,7 @@ return [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
+            'prefix' => 'cae_',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 

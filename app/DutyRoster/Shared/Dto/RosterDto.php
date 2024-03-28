@@ -92,6 +92,11 @@ class RosterDto
         return $this;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getActivity(): ActivityEnum
     {
         return $this->activity;

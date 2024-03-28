@@ -21,8 +21,9 @@ class RosterRepository implements RosterRepositoryInterface
     public function persistRosterDto(RosterDto $rosterDto): void
     {
         $model = $this->transformDtoToModel($rosterDto);
-
         $model->save();
+
+        $rosterDto->setId($model->id);
     }
 
     public function findByCriteria(
@@ -49,14 +50,21 @@ class RosterRepository implements RosterRepositoryInterface
         if ($startLocation) {
             $query->whereCheckInLocationId($startLocation->id);
         }
-        
+
         return $query->get();
     }
 
     private function transformDtoToModel(RosterDto $rosterDto): Roster
     {
-        $checkInLocation = $this->locationRepository->findOrCreateByCode($rosterDto->getCheckInLocation()->getCode());
-        $checkPOutLocation = $this->locationRepository->findOrCreateByCode($rosterDto->getCheckOutLocation()->getCode());
+        if (!$rosterDto->getCheckInLocation()->getId()) {
+            $checkInLocation = $this->locationRepository->findOrCreateByCode($rosterDto->getCheckInLocation()->getCode());
+            $rosterDto->getCheckInLocation()->setId($checkInLocation->id);
+        }
+
+        if (!$rosterDto->getCheckOutLocation()->getId()) {
+            $checkOutLocation = $this->locationRepository->findOrCreateByCode($rosterDto->getCheckOutLocation()->getCode());
+            $rosterDto->getCheckOutLocation()->setId($checkOutLocation->id);
+        }
 
         return new Roster([
             'day' => $rosterDto->getDay()->format('Y-m-d'),
@@ -66,8 +74,8 @@ class RosterRepository implements RosterRepositoryInterface
             'activity_end' => $rosterDto->getActivityEnd()?->format('H:i'),
             'departure' => $rosterDto->getDeparture()->format('H:i'),
             'arrival' => $rosterDto->getArrival()->format('H:i'),
-            'check_in_location_id' => $checkInLocation->id,
-            'check_out_location_id' => $checkPOutLocation->id,
+            'check_in_location_id' => $rosterDto->getCheckOutLocation()->getId(),
+            'check_out_location_id' =>$rosterDto->getCheckOutLocation()->getId(),
         ]);
     }
 }

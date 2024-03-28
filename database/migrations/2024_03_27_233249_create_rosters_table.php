@@ -23,8 +23,10 @@ return new class extends Migration {
             $table->time('activity_end')->nullable();
             $table->time('departure')->nullable(false);
             $table->time('arrival')->nullable(false);
-            $table->foreignIdFor(Location::class, 'check_in_location_id')->nullable(false);
-            $table->foreignIdFor(Location::class, 'check_out_location_id')->nullable(false);
+            $table->foreignIdFor(Location::class, 'check_in_location_id')
+                ->nullable(false)->constrained('locations');
+            $table->foreignIdFor(Location::class, 'check_out_location_id')
+                ->nullable(false)->constrained('locations');
 
             $table->timestamps();
         });
