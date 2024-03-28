@@ -5,6 +5,8 @@ namespace App\DutyRoster\Repository;
 use App\DutyRoster\Shared\Dto\RosterDto;
 use App\Location\LocationRepositoryInterface;
 use App\Models\Roster;
+use DateTime;
+use Illuminate\Database\Eloquent\Collection;
 
 class RosterRepository implements RosterRepositoryInterface
 {
@@ -19,6 +21,14 @@ class RosterRepository implements RosterRepositoryInterface
         $model = $this->transformDtoToModel($rosterDto);
 
         $model->save();
+    }
+
+    public function findRostersBetweenDates(DateTime $start, DateTime $end): Collection
+    {
+        return Roster::where(
+            'day', '>=', $start->format('Y-m-d')
+        )->where('day', '<=', $end->format('Y-m-d'))
+            ->get();
     }
 
     private function transformDtoToModel(RosterDto $rosterDto): Roster

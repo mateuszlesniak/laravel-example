@@ -4,6 +4,9 @@ namespace App\Jobs\DutyRoster;
 
 use App\DutyRoster\Dtr\DtrDutyRosterDirector;
 use App\DutyRoster\DutyRosterDirectorInterface;
+use App\DutyRoster\Shared\Exception\EmptyDataException;
+use App\DutyRoster\Shared\Exception\MimeTypeNotSupportedException;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,7 +26,12 @@ class StoreDutyRoster implements ShouldQueue
 
     /**
      * @param array|DutyRosterDirectorInterface[] $directors
+     *
      * @return void
+     *
+     * @throws MimeTypeNotSupportedException
+     * @throws Exception
+     * @throws EmptyDataException
      */
     public function handle(array $directors): void
     {

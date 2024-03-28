@@ -3,12 +3,11 @@
 namespace App\DutyRoster\Dtr;
 
 use App\DutyRoster\DutyRosterReaderInterface;
-use App\DutyRoster\DutyRosterTransformerInterface;
 use App\DutyRoster\DutyRosterWriterInterface;
 use App\DutyRoster\Shared\AbstractDirector;
 use App\DutyRoster\Shared\DutyRosterMimeTypeEnum;
 use App\DutyRoster\Shared\Exception\EmptyDataException;
-use App\DutyRoster\Shared\Exception\MimeTypeNotSupported;
+use App\DutyRoster\Shared\Exception\MimeTypeNotSupportedException;
 use Exception;
 
 final class DtrDutyRosterDirector extends AbstractDirector
@@ -30,7 +29,7 @@ final class DtrDutyRosterDirector extends AbstractDirector
     public function loadData(string $data, string $mimeType): void
     {
         if (!$this->checkIfMimeTypeIsSupported($mimeType)) {
-            throw new MimeTypeNotSupported();
+            throw new MimeTypeNotSupportedException();
         }
 
         if (empty($data)) {
@@ -62,6 +61,4 @@ final class DtrDutyRosterDirector extends AbstractDirector
             $writer->write($activitiesDtoCollection);
         }
     }
-
-
 }

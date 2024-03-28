@@ -6,11 +6,11 @@ use Exception;
 use JetBrains\PhpStorm\Pure;
 use Throwable;
 
-class EmptyDataException extends Exception
+class MimeTypeNotSupportedException extends Exception
 {
     #[Pure]
     public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {
-        parent::__construct('Empty content or wrong format.', $code, $previous);
+        parent::__construct('Mime type not supported.', $code, $previous);
     }
 }
