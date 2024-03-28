@@ -5,6 +5,7 @@ namespace App\DutyRoster\Repository;
 use App\DutyRoster\Dtr\ActivityEnum;
 use App\DutyRoster\Shared\Dto\RosterDto;
 use App\Location\LocationRepositoryInterface;
+use App\Models\Location;
 use App\Models\Roster;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
@@ -24,16 +25,31 @@ class RosterRepository implements RosterRepositoryInterface
         $model->save();
     }
 
-    public function findByCriteria(DateTime $start, DateTime $end, ?ActivityEnum $activityEnum = null): Collection
+    public function findByCriteria(
+        ?DateTime $start = null,
+        ?DateTime $end = null,
+        ?ActivityEnum $activityEnum = null,
+        ?Location $startLocation = null,
+    ): Collection
     {
-        $query = Roster::with(['checkInLocation', 'checkOutLocation'])
-            ->where('day', '>=', $start->format('Y-m-d'))
-            ->where('day', '<=', $end->format('Y-m-d'));
+        $query = Roster::with(['checkInLocation', 'checkOutLocation']);
+
+        if ($start) {
+            $query->where('day', '>=', $start->format('Y-m-d'));
+        }
+
+        if ($end) {
+            $query->where('day', '<=', $end->format('Y-m-d'));
+        }
 
         if ($activityEnum) {
             $query->where('activity_code', '=', $activityEnum->code());
         }
 
+        if ($startLocation) {
+            $query->whereCheckInLocationId($startLocation->id);
+        }
+        
         return $query->get();
     }
 

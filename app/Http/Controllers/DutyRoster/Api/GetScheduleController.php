@@ -20,7 +20,7 @@ class GetScheduleController extends Controller
     {
     }
 
-    public function __invoke(Request $request, string $activityCode): JsonResponse
+    public function __invoke(Request $request, ?string $activityCode = null): JsonResponse
     {
         $startDate = $this->createDateFromString($request->get('start_date', null));
 
