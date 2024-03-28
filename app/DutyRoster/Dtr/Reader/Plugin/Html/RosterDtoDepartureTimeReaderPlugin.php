@@ -3,6 +3,7 @@
 namespace App\DutyRoster\Dtr\Reader\Plugin\Html;
 
 use App\DutyRoster\Shared\Dto\RosterDto;
+use InvalidArgumentException;
 use Symfony\Component\DomCrawler\Crawler;
 
 final class RosterDtoDepartureTimeReaderPlugin extends AbstractReaderPlugin
@@ -17,7 +18,7 @@ final class RosterDtoDepartureTimeReaderPlugin extends AbstractReaderPlugin
         $departure = $this->getValue($roster);
 
         if (strlen($departure) > 4) {
-            return;
+            throw new InvalidArgumentException();
         }
 
         $rosterDto->getDeparture()->setTime(

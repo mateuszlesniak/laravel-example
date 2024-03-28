@@ -7,7 +7,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 abstract class TestCase extends BaseTestCase
 {
-    public function prepareCrawler(string $expectedValue): Crawler
+    public function prepareCrawler(string $expectedValue = ''): Crawler
     {
         $crawler = $this->createMock(Crawler::class);
         $crawler->method('filter')->willReturn($crawler);
