@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-final class StoreController extends Controller
+final class PostStoreController extends Controller
 {
     private const FIELD_FILE = 'file';
 
