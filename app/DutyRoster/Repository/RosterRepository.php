@@ -25,9 +25,9 @@ class RosterRepository implements RosterRepositoryInterface
 
     public function findRostersBetweenDates(DateTime $start, DateTime $end): Collection
     {
-        return Roster::where(
-            'day', '>=', $start->format('Y-m-d')
-        )->where('day', '<=', $end->format('Y-m-d'))
+        return Roster::with(['checkInLocation', 'checkOutLocation'])
+            ->where('day', '>=', $start->format('Y-m-d'))
+            ->where('day', '<=', $end->format('Y-m-d'))
             ->get();
     }
 

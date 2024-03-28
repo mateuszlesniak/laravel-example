@@ -32,14 +32,13 @@ class Roster extends Model
         ];
     }
 
-
     public function checkInLocation(): BelongsTo
     {
-        return $this->belongsTo(Location::class, 'id', 'check_in_location_id');
+        return $this->belongsTo(Location::class, 'check_in_location_id','id' );
     }
 
     public function checkOutLocation(): BelongsTo
     {
-        return $this->belongsTo(Location::class, 'id', 'check_out_location_id');
+        return $this->belongsTo(Location::class, 'check_out_location_id','id' );
     }
 }
