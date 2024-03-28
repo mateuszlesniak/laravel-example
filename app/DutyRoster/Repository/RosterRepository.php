@@ -2,6 +2,7 @@
 
 namespace App\DutyRoster\Repository;
 
+use App\DutyRoster\Dtr\ActivityEnum;
 use App\DutyRoster\Shared\Dto\RosterDto;
 use App\Location\LocationRepositoryInterface;
 use App\Models\Roster;
@@ -23,12 +24,17 @@ class RosterRepository implements RosterRepositoryInterface
         $model->save();
     }
 
-    public function findRostersBetweenDates(DateTime $start, DateTime $end): Collection
+    public function findByCriteria(DateTime $start, DateTime $end, ?ActivityEnum $activityEnum = null): Collection
     {
-        return Roster::with(['checkInLocation', 'checkOutLocation'])
+        $query = Roster::with(['checkInLocation', 'checkOutLocation'])
             ->where('day', '>=', $start->format('Y-m-d'))
-            ->where('day', '<=', $end->format('Y-m-d'))
-            ->get();
+            ->where('day', '<=', $end->format('Y-m-d'));
+
+        if ($activityEnum) {
+            $query->where('activity_code', '=', $activityEnum->code());
+        }
+
+        return $query->get();
     }
 
     private function transformDtoToModel(RosterDto $rosterDto): Roster

@@ -11,7 +11,7 @@ Route::prefix('duty-rosters')->group(function () {
     Route::get('/event', GetEventController::class);
 //    Route::get('/event/location/{locationCode}', GetEventController::class);
     Route::get('/schedule', GetScheduleController::class);
-//    Route::get('/schedule/{activityCode}', GetEventController::class);
+    Route::get('/schedule/{activityCode?}', GetScheduleController::class);
 });
 
 
