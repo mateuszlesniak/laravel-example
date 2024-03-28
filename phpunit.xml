@@ -23,6 +23,9 @@
             <directory suffix="Enum.php">app</directory>
             <directory suffix="Exception.php">app</directory>
             <directory suffix="Interface.php">app</directory>
+
+            <file>./app/Http/Controllers/Controller.php</file>
+            <file>./app/DutyRoster/Shared/AbstractDirector.php</file>
         </exclude>
     </source>
     <php>
@@ -40,9 +43,8 @@
 
     <coverage>
         <report>
-            <html outputDirectory=".coverage" lowUpperBound="50" highLowerBound="90"/>
+            <html outputDirectory="./.coverage" lowUpperBound="50" highLowerBound="90"/>
         </report>
     </coverage>
 
 </phpunit>
-

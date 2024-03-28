@@ -9,7 +9,7 @@
 
 ## Installation
 
-> Note: When running application for the first time (or hasn't got `vendor` folder) simply run:
+> Note: When running application for the first time (or hasn't got **vendor** folder) simply run:
 > ```bash
 > docker run --rm \
 >    -u "$(id -u):$(id -g)" \
@@ -20,13 +20,21 @@
 > ```
 
 1. Run `./vendor/bin/sail build`
-2. When project will be built run `./vendor/bin/sail up -d`
-3. To run migrations for database run `./vendor/bin/sail artisan migrate`
+1. When project will be built run `./vendor/bin/sail up -d`
+1. To run migrations for database run `./vendor/bin/sail artisan migrate`
 
 ## API
 
-Under `routes` folder exists latest postman collection for all available API routes.
+* Under **./routes** folder exists latest postman collection for all available API routes.
 
 ## Testing
 
-Run command `./vendor/bin/sail artisan test` to run all tests
+#### Report
+
+> For CLI report you can run `./vendor/bin/sail  artisan test --coverage`
+
+1. To generate tests report use `./vendor/bin/sail artisan test --coverage-html ./.coverage` command
+1. Report will be generated in **./.coverage** folder. Open *index.html* file to review it
+
+#### Run tests
+1. Run command `./vendor/bin/sail artisan test` to run all tests
