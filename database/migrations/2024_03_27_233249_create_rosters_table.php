@@ -15,7 +15,9 @@ return new class extends Migration {
         Schema::create('rosters', function (Blueprint $table) {
             $table->id();
             $table->date('day')->nullable(false);
-            $table->enum('activity_code', ActivityEnum::cases())->nullable(false);
+            $table->enum('activity_code', array_map(function (ActivityEnum $enum) {
+                return $enum->value;
+            }, ActivityEnum::cases()))->nullable(false);
             $table->unsignedInteger('flight_number');
             $table->time('activity_start');
             $table->time('activity_end');

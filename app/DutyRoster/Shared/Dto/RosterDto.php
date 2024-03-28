@@ -97,6 +97,11 @@ class RosterDto
         return $this->activity;
     }
 
+    public function getFlightNumber(): ?int
+    {
+        return $this->flightNumber;
+    }
+
     public function getDay(): DateTime
     {
         return $this->day;

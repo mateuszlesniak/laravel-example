@@ -12,6 +12,7 @@ class DtrDutyRosterWriter implements DutyRosterWriterInterface
     public function write(RosterDtoCollection $dtoCollection): void
     {
         foreach ($dtoCollection as $rosterDto) {
+
         }
     }
 
