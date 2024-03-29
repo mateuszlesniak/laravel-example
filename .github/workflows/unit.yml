@@ -29,8 +29,8 @@ jobs:
         mkdir -p database
         touch database/database.sqlite
         php artisan migrate
-    - name: Execute tests (Unit and Feature tests)
+    - name: Execute tests (Unit and Feature tests) with coverage report
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: php artisan test
+      run: php artisan test --coverage
