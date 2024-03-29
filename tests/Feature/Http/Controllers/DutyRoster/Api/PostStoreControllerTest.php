@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Http\Controllers\DutyRoster\Api;
 
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
