@@ -5,9 +5,7 @@ namespace App\DutyRoster\Dtr;
 use App\DutyRoster\DutyRosterReaderInterface;
 use App\DutyRoster\DutyRosterWriterInterface;
 use App\DutyRoster\Shared\AbstractDirector;
-use App\DutyRoster\Shared\DutyRosterMimeTypeEnum;
 use App\DutyRoster\Shared\Exception\EmptyDataException;
-use App\DutyRoster\Shared\Exception\MimeTypeNotSupportedException;
 use Exception;
 
 final class DtrDutyRosterDirector extends AbstractDirector
@@ -28,21 +26,12 @@ final class DtrDutyRosterDirector extends AbstractDirector
 
     public function loadData(string $data, string $mimeType): void
     {
-        if (!$this->checkIfMimeTypeIsSupported($mimeType)) {
-            throw new MimeTypeNotSupportedException();
-        }
-
         if (empty($data)) {
             throw new EmptyDataException();
         }
 
         $this->mimeType = $mimeType;
         $this->originalData = $data;
-    }
-
-    private function checkIfMimeTypeIsSupported(string $mimeType): bool
-    {
-        return $mimeType === DutyRosterMimeTypeEnum::TEXT_HTML->value;
     }
 
     public function process(): void
@@ -55,6 +44,10 @@ final class DtrDutyRosterDirector extends AbstractDirector
             }
 
             throw new Exception('Cannot find proper reader for given roster');
+        }
+
+        if (0 === $this->writers->count()) {
+            throw new Exception('Cannot find proper writers for given roster');
         }
 
         foreach ($this->writers as $writer) {

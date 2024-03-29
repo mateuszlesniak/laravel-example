@@ -4,7 +4,7 @@ namespace Tests\Unit\DutyRoster\Shared\Dto;
 
 use App\DutyRoster\Shared\Dto\RosterDto;
 use App\DutyRoster\Shared\Dto\RosterDtoCollection;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class RosterDtoCollectionTest extends TestCase
 {

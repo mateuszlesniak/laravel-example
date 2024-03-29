@@ -7,7 +7,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 abstract class TestCase extends BaseTestCase
 {
-    public function prepareCrawler(string $expectedValue = ''): Crawler
+    protected function prepareCrawler(string $expectedValue = ''): Crawler
     {
         $crawler = $this->createMock(Crawler::class);
         $crawler->method('filter')->willReturn($crawler);
@@ -16,4 +16,10 @@ abstract class TestCase extends BaseTestCase
 
         return $crawler;
     }
+
+    protected function getDtrHtmlRoster(): string
+    {
+        return file_get_contents(__DIR__ . '/Unit/DutyRoster/_data/dtr_html_example.html');
+    }
+
 }
