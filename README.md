@@ -31,6 +31,9 @@
 
 #### Report
 
+Current report for project files:
+![docs/coverage_report.png](docs/coverage_report.png)
+
 > For CLI report you can run `./vendor/bin/sail  artisan test --coverage`
 
 1. To generate tests report use `./vendor/bin/sail artisan test --coverage-html ./.coverage` command
