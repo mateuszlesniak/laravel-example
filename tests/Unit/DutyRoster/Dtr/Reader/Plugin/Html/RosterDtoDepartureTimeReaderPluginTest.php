@@ -23,14 +23,15 @@ class RosterDtoDepartureTimeReaderPluginTest extends TestCase
         parent::setUp();
     }
 
-    public function testThrowException(): void
+    public function testDifferentTypeHours(): void
     {
         $crawler = $this->prepareCrawler('12345');
-        $rosterDto = new RosterDto();
-
-        $this->expectException(InvalidArgumentException::class);
+        $rosterDto = (new RosterDto())->setDeparture(DateTime::createFromFormat('!Y-m-d', '2022-01-01'));
 
         $this->subject->fillRosterDto($crawler, $rosterDto);
+
+        $this->assertSame('00', $rosterDto->getDeparture()->format('H'));
+        $this->assertSame('00', $rosterDto->getDeparture()->format('i'));
     }
 
     public function testValue(): void

@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use InvalidArgumentException;
 
 final class PostStoreController extends Controller
 {
@@ -20,7 +21,7 @@ final class PostStoreController extends Controller
         $file = $request->file(self::FIELD_FILE);
 
         $message = null;
-        if (!$file->isValid()) {
+        if (!$file?->isValid()) {
             return response()->json($message, Response::HTTP_BAD_REQUEST);
         }
 
@@ -30,8 +31,11 @@ final class PostStoreController extends Controller
             $responseCode = Response::HTTP_CREATED;
         } catch (EmptyDataException) {
             $responseCode = Response::HTTP_NO_CONTENT;
-        } catch (MimeTypeNotSupportedException$mimeTypeNotSupportedException) {
-            $message = $mimeTypeNotSupportedException->getMessage();
+        } catch (MimeTypeNotSupportedException|InvalidArgumentException $exception) {
+            if ($exception instanceof MimeTypeNotSupportedException) {
+                $message = $exception->getMessage();
+            }
+
             $responseCode = Response::HTTP_UNPROCESSABLE_ENTITY;
         } catch (Exception $exception) {
             $responseCode = Response::HTTP_INTERNAL_SERVER_ERROR;
